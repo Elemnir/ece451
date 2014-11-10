@@ -1,0 +1,284 @@
+Script started on Mon 06 Oct 2014 10:23:05 AM EDT
+Agent pid 23567
+Identity added: /home/karkadan/.ssh/karkadan_rsa (/home/karkadan/.ssh/karkadan_rsa)
+karkadan@zia:lab1$ spim
+SPIM Version 8.0 of January 8, 2010
+Copyright 1990-2010, James R. Larus.
+All Rights Reserved.
+See the file README for a full copyright notice.
+Loaded: /usr/lib/spim/exceptions.s
+(spim) read "fib.s asm"
+(spim) print_symbols
+g	__eoth at 0x00400024
+g	__start at 0x00400000
+g	main at 0x00400024
+(spim) step
+[0x00400000]	0x8fa40000  lw $4, 0($29)                   ; 183: lw $a0 0($sp)		# argc
+(spim) step
+[0x00400004]	0x27a50004  addiu $5, $29, 4                ; 184: addiu $a1 $sp 4		# argv
+(spim) step
+[0x00400008]	0x24a60004  addiu $6, $5, 4                 ; 185: addiu $a2 $a1 4		# envp
+(spim) step
+[0x0040000c]	0x00041080  sll $2, $4, 2                   ; 186: sll $v0 $a0 2
+(spim) step
+[0x00400010]	0x00c23021  addu $6, $6, $2                 ; 187: addu $a2 $a2 $v0
+(spim) steo
+Unknown spim command
+(spim) steo
+Unknown spim command
+(spim) step
+[0x00400014]	0x0c100009  jal 0x00400024 [main]           ; 188: jal main
+(spim) step
+[0x00400024]	0x27bdffe0  addiu $29, $29, -32             ; 7: subu    $sp, $sp, 32 
+(spim) step
+[0x00400028]	0xafbf0014  sw $31, 20($29)                 ; 8: sw      $ra, 20($sp)
+(spim) step
+[0x0040002c]	0xafbe0010  sw $30, 16($29)                 ; 9: sw      $fp, 16($sp)
+(spim) step
+[0x00400030]	0x27be001c  addiu $30, $29, 28              ; 10: addiu   $fp, $sp, 28
+(spim) step
+[0x00400034]	0x34020004  ori $2, $0, 4                   ; 12: li      $v0, 4
+(spim) rpint     print_all_regs
+ PC      = 00400038   EPC     = 00000000   Cause   = 00000000   BadVAddr= 00000000
+ Status  = 3000ff10   HI      = 00000000   LO      = 00000000
+				 General Registers
+R0  (r0) = 0          R8  (t0) = 0          R16 (s0) = 0          R24 (t8) = 0         
+R1  (at) = 0          R9  (t1) = 0          R17 (s1) = 0          R25 (t9) = 0         
+R2  (v0) = 4          R10 (t2) = 0          R18 (s2) = 0          R26 (k0) = 0         
+R3  (v1) = 0          R11 (t3) = 0          R19 (s3) = 0          R27 (k1) = 0         
+R4  (a0) = 0          R12 (t4) = 0          R20 (s4) = 0          R28 (gp) = 268468224 
+R5  (a1) = 2147480384 R13 (t5) = 0          R21 (s5) = 0          R29 (sp) = 2147480348
+R6  (a2) = 2147480388 R14 (t6) = 0          R22 (s6) = 0          R30 (s8) = 2147480376
+R7  (a3) = 0          R15 (t7) = 0          R23 (s7) = 0          R31 (ra) = 4194328   
+
+ FIR    = 00009800    FCSR    = 00000000    FCCR   = 00000000   FEXR    = 00000000
+ FENR   = 00000000
+			      Double Floating Point Registers
+FP0  = 0.00000       FP8  = 0.00000       FP16 = 0.00000       FP24 = 0.00000      
+FP2  = 0.00000       FP10 = 0.00000       FP18 = 0.00000       FP26 = 0.00000      
+FP4  = 0.00000       FP12 = 0.00000       FP20 = 0.00000       FP28 = 0.00000      
+FP6  = 0.00000       FP14 = 0.00000       FP22 = 0.00000       FP30 = 0.00000      
+			      Single Floating Point Registers
+FP0  = 0.00000       FP8  = 0.00000       FP16 = 0.00000       FP24 = 0.00000      
+FP1  = 0.00000       FP9  = 0.00000       FP17 = 0.00000       FP25 = 0.00000      
+FP2  = 0.00000       FP10 = 0.00000       FP18 = 0.00000       FP26 = 0.00000      
+FP3  = 0.00000       FP11 = 0.00000       FP19 = 0.00000       FP27 = 0.00000      
+FP4  = 0.00000       FP12 = 0.00000       FP20 = 0.00000       FP28 = 0.00000      
+FP5  = 0.00000       FP13 = 0.00000       FP21 = 0.00000       FP29 = 0.00000      
+FP6  = 0.00000       FP14 = 0.00000       FP22 = 0.00000       FP30 = 0.00000      
+FP7  = 0.00000       FP15 = 0.00000       FP23 = 0.00000       FP31 = 0.00000      
+
+?
+(spim) ?
+
+SPIM is a MIPS R2000 simulator.
+Its top-level commands are:
+exit  -- Exit the simulator
+quit  -- Exit the simulator
+read "FILE" -- Read FILE of assembly code into memory
+load "FILE" -- Same as read
+run <ADDR> -- Start the program at optional ADDRESS
+step <N> -- Step the program for N instructions
+continue -- Continue program execution without stepping
+print $N -- Print register N
+print $fN -- Print floating point register N
+print ADDR -- Print contents of memory at ADDRESS
+print_symbols -- Print all global symbols
+print_all_regs -- Print all MIPS registers
+print_all_regs hex -- Print all MIPS registers in hex
+reinitialize -- Clear the memory and registers
+breakpoint <ADDR> -- Set a breakpoint at address
+delete <ADDR> -- Delete all breakpoints at address
+list -- List all breakpoints
+dump [ "FILE" ] -- Dump binary code to spim.dump or FILE in network byte order
+dumpnative [ "FILE" ] -- Dump binary code to spim.dump or FILE in host byte order
+. -- Rest of line is assembly instruction to put in memory
+<cr> -- Newline reexecutes previous command
+? -- Print this message
+
+Most commands can be abbreviated to their unique prefix
+e.g., ex(it), re(ad), l(oad), ru(n), s(tep), p(rint)
+
+(spim) print_all  _regs hex
+ PC      = 00400038   EPC     = 00000000   Cause   = 00000000   BadVAddr= 00000000
+ Status  = 3000ff10   HI      = 00000000   LO      = 00000000
+				 General Registers
+R0  (r0) = 00000000  R8  (t0) = 00000000  R16 (s0) = 00000000  R24 (t8) = 00000000
+R1  (at) = 00000000  R9  (t1) = 00000000  R17 (s1) = 00000000  R25 (t9) = 00000000
+R2  (v0) = 00000004  R10 (t2) = 00000000  R18 (s2) = 00000000  R26 (k0) = 00000000
+R3  (v1) = 00000000  R11 (t3) = 00000000  R19 (s3) = 00000000  R27 (k1) = 00000000
+R4  (a0) = 00000000  R12 (t4) = 00000000  R20 (s4) = 00000000  R28 (gp) = 10008000
+R5  (a1) = 7ffff340  R13 (t5) = 00000000  R21 (s5) = 00000000  R29 (sp) = 7ffff31c
+R6  (a2) = 7ffff344  R14 (t6) = 00000000  R22 (s6) = 00000000  R30 (s8) = 7ffff338
+R7  (a3) = 00000000  R15 (t7) = 00000000  R23 (s7) = 00000000  R31 (ra) = 00400018
+
+ FIR    = 00009800    FCSR    = 00000000    FCCR   = 00000000   FEXR    = 00000000
+ FENR   = 00000000
+			      Double Floating Point Registers
+FP0 =00000000,00000000 FP8 =00000000,00000000 FP16=00000000,00000000 FP24=00000000,00000000
+FP2 =00000000,00000000 FP10=00000000,00000000 FP18=00000000,00000000 FP26=00000000,00000000
+FP4 =00000000,00000000 FP12=00000000,00000000 FP20=00000000,00000000 FP28=00000000,00000000
+FP6 =00000000,00000000 FP14=00000000,00000000 FP22=00000000,00000000 FP30=00000000,00000000
+			      Single Floating Point Registers
+FP0 =00000000 FP8 =00000000 FP16=00000000 FP24=00000000
+FP1 =00000000 FP9 =00000000 FP17=00000000 FP25=00000000
+FP2 =00000000 FP10=00000000 FP18=00000000 FP26=00000000
+FP3 =00000000 FP11=00000000 FP19=00000000 FP27=00000000
+FP4 =00000000 FP12=00000000 FP20=00000000 FP28=00000000
+FP5 =00000000 FP13=00000000 FP21=00000000 FP29=00000000
+FP6 =00000000 FP14=00000000 FP22=00000000 FP30=00000000
+FP7 =00000000 FP15=00000000 FP23=00000000 FP31=00000000
+
+(spim) step
+[0x00400038]	0x3c041001  lui $4, 4097 [PROMPT]           ; 13: la      $a0, PROMPT
+(spim) step
+[0x0040003c]	0x0000000c  syscall                         ; 14: syscall
+Enter n to calculate the n-th Fibonacci number: (spim) step
+[0x00400040]	0x34020005  ori $2, $0, 5                   ; 15: li      $v0, 5
+(spim) print  _all_regs
+ PC      = 00400044   EPC     = 00000000   Cause   = 00000000   BadVAddr= 00000000
+ Status  = 3000ff10   HI      = 00000000   LO      = 00000000
+				 General Registers
+R0  (r0) = 0          R8  (t0) = 0          R16 (s0) = 0          R24 (t8) = 0         
+R1  (at) = 0          R9  (t1) = 0          R17 (s1) = 0          R25 (t9) = 0         
+R2  (v0) = 5          R10 (t2) = 0          R18 (s2) = 0          R26 (k0) = 0         
+R3  (v1) = 0          R11 (t3) = 0          R19 (s3) = 0          R27 (k1) = 0         
+R4  (a0) = 268500992  R12 (t4) = 0          R20 (s4) = 0          R28 (gp) = 268468224 
+R5  (a1) = 2147480384 R13 (t5) = 0          R21 (s5) = 0          R29 (sp) = 2147480348
+R6  (a2) = 2147480388 R14 (t6) = 0          R22 (s6) = 0          R30 (s8) = 2147480376
+R7  (a3) = 0          R15 (t7) = 0          R23 (s7) = 0          R31 (ra) = 4194328   
+
+ FIR    = 00009800    FCSR    = 00000000    FCCR   = 00000000   FEXR    = 00000000
+ FENR   = 00000000
+			      Double Floating Point Registers
+FP0  = 0.00000       FP8  = 0.00000       FP16 = 0.00000       FP24 = 0.00000      
+FP2  = 0.00000       FP10 = 0.00000       FP18 = 0.00000       FP26 = 0.00000      
+FP4  = 0.00000       FP12 = 0.00000       FP20 = 0.00000       FP28 = 0.00000      
+FP6  = 0.00000       FP14 = 0.00000       FP22 = 0.00000       FP30 = 0.00000      
+			      Single Floating Point Registers
+FP0  = 0.00000       FP8  = 0.00000       FP16 = 0.00000       FP24 = 0.00000      
+FP1  = 0.00000       FP9  = 0.00000       FP17 = 0.00000       FP25 = 0.00000      
+FP2  = 0.00000       FP10 = 0.00000       FP18 = 0.00000       FP26 = 0.00000      
+FP3  = 0.00000       FP11 = 0.00000       FP19 = 0.00000       FP27 = 0.00000      
+FP4  = 0.00000       FP12 = 0.00000       FP20 = 0.00000       FP28 = 0.00000      
+FP5  = 0.00000       FP13 = 0.00000       FP21 = 0.00000       FP29 = 0.00000      
+FP6  = 0.00000       FP14 = 0.00000       FP22 = 0.00000       FP30 = 0.00000      
+FP7  = 0.00000       FP15 = 0.00000       FP23 = 0.00000       FP31 = 0.00000      
+
+?
+(spim) ?
+
+SPIM is a MIPS R2000 simulator.
+Its top-level commands are:
+exit  -- Exit the simulator
+quit  -- Exit the simulator
+read "FILE" -- Read FILE of assembly code into memory
+load "FILE" -- Same as read
+run <ADDR> -- Start the program at optional ADDRESS
+step <N> -- Step the program for N instructions
+continue -- Continue program execution without stepping
+print $N -- Print register N
+print $fN -- Print floating point register N
+print ADDR -- Print contents of memory at ADDRESS
+print_symbols -- Print all global symbols
+print_all_regs -- Print all MIPS registers
+print_all_regs hex -- Print all MIPS registers in hex
+reinitialize -- Clear the memory and registers
+breakpoint <ADDR> -- Set a breakpoint at address
+delete <ADDR> -- Delete all breakpoints at address
+list -- List all breakpoints
+dump [ "FILE" ] -- Dump binary code to spim.dump or FILE in network byte order
+dumpnative [ "FILE" ] -- Dump binary code to spim.dump or FILE in host byte order
+. -- Rest of line is assembly instruction to put in memory
+<cr> -- Newline reexecutes previous command
+? -- Print this message
+
+Most commands can be abbreviated to their unique prefix
+e.g., ex(it), re(ad), l(oad), ru(n), s(tep), p(rint)
+
+(spim) step
+[0x00400044]	0x0000000c  syscall                         ; 16: syscall
+steo
+(spim) step
+[0x00400048]	0x00022021  addu $4, $0, $2                 ; 17: move    $a0, $v0
+(spim) step
+[0x0040004c]	0x0c10001f  jal 0x0040007c [fib]            ; 20: jal     fib
+(spim) step
+[0x0040007c]	0x27bdffd8  addiu $29, $29, -40             ; 42: subu    $sp, $sp, 40
+(spim) s step
+[0x00400080]	0xafbf0010  sw $31, 16($29)                 ; 43: sw      $ra, 16($sp)
+(spim) step
+[0x00400084]	0xafbe0008  sw $30, 8($29)                  ; 44: sw      $fp, 8($sp)
+(spim) step
+[0x00400088]	0x27be0024  addiu $30, $29, 36              ; 45: addiu   $fp, $sp, 36
+(spim) 
+[0x0040008c]	0xafc40000  sw $4, 0($30)                   ; 46: sw      $a0, 0($fp)
+(spim) break   eakpoint 0x0040008c          fib
+Cannot put a breakpoint at address 0x00000000
+(spim) breakpoint 0x0040007c
+(spim) breakpoint            print $29 
+Reg 29 = 0x7ffff2f4 (2147480308)
+(spim) print $29 $30 $31
+Reg 29 = 0x7ffff2f4 (2147480308)
+(spim) ^[[A    breakpoint            step
+[0x00400090]	0xafb00004  sw $16, 4($29)                  ; 47: sw      $s0, 4($sp)
+(spim) step
+[0x00400094]	0xafb10000  sw $17, 0($29)                  ; 48: sw      $s1, 0($sp)
+(spim) step
+[0x00400098]	0x8fd00000  lw $16, 0($30)                  ; 51: lw      $s0, 0($fp)
+(spim) step
+[0x0040009c]	0x1a00000a  blez $16 40 [fib_base0-0x0040009c]; 52: blez    $s0, fib_base0
+(spim) step
+[0x004000c4]	0x00001020  add $2, $0, $0                  ; 68: add     $v0, $0, $0
+(spim) step
+[0x004000c8]	0x08100035  j 0x004000d4 [fib_return]       ; 69: j       fib_return
+(spim) step
+[0x004000d4]	0x8fbf0010  lw $31, 16($29)                 ; 77: lw      $ra, 16($sp)
+(spim) step
+[0x004000d8]	0x8fbe0008  lw $30, 8($29)                  ; 78: lw      $fp,  8($sp)
+(spim) step
+[0x004000dc]	0x8fb00004  lw $16, 4($29)                  ; 79: lw      $s0,  4($sp)
+(spim) step
+[0x004000e0]	0x8fb10000  lw $17, 0($29)                  ; 80: lw      $s1,  0($sp)
+(spim) step
+[0x004000e4]	0x27bd0028  addiu $29, $29, 40              ; 81: addiu   $sp, $sp, 40
+(spim) 
+[0x004000e8]	0x03e00008  jr $31                          ; 82: jr      $ra
+(spim) 
+[0x00400050]	0x00022021  addu $4, $0, $2                 ; 23: move    $a0, $v0
+(spim) 
+[0x00400054]	0x34020001  ori $2, $0, 1                   ; 24: li      $v0, 1
+(spim) 
+[0x00400058]	0x0000000c  syscall                         ; 25: syscall
+0(spim) 
+[0x0040005c]	0x3404000a  ori $4, $0, 10                  ; 28: li      $a0, 0xA
+(spim) breakpoint [fib_return]
+spim: (parser) Unknown character on line 1 of file <standard input>
+	  breakpoint [fib_return]
+	             ^
+p 
+Must supply an address for breakpoint
+No instruction to breakpoint at address 0x0040007c
+(spim) pri   breakpoint 0x004000d4
+(spim) list
+Breakpoint at 0x004000d4
+Breakpoint at 0x0040007c
+(spim) reinitialize
+Loaded: /usr/lib/spim/exceptions.s
+SPIM Version 8.0 of January 8, 2010
+Copyright 1990-2010, James R. Larus.
+All Rights Reserved.
+See the file README for a full copyright notice.
+(spim) read     un
+The following symbols are undefined:
+main
+
+Instruction references undefined symbol at 0x00400014
+[0x00400014]	0x0c000000  jal 0x00000000 [main]           ; 188: jal main
+(spim) exit
+karkadan@zia:lab1$ ls
+fact.asm  fib.asm  hello.asm  log.txt  primes.asm
+karkadan@zia:lab1$ s[Kexit
+exit
+
+Script done on Mon 06 Oct 2014 10:37:04 AM EDT
