@@ -1,5 +1,7 @@
 from __future__ import division, print_function
 
+from random import randrange
+from operator import attrgetter
 import sys
 import argparse
 
@@ -12,24 +14,33 @@ class Block(object):
     def __repr__(self):
         return str(self.num)
 
+
 class Cache(object):
     """Defines the cache object, which can hold a number of blocks"""
-    def __init__(self, bsize, bcount, assoc, htime, mtime, repl="r"):
+    def __init__(self, bsize, bcount, assoc, htime, mtime, pra="r"):
         self.bsize = int(bsize)   # Size of the Block in Words
         self.bcount = int(bcount) # Number of Blocks in the Cache
         self.assoc = int(assoc)   # Size of Associative Sets in the Cache
         self.htime = int(htime)   # Hit time in cycles
         self.mtime = int(mtime)   # Miss penalty in cycles
-        self.repl = str(repl)     # Page replacement algorithm setting
+        self.pra = str(pra)       # Page replacement algorithm setting
         
+        # The actual Cache List
         self.blist = [None] * self.bcount
+        
+        # List of all referenced Blocks
         self.blocks = {}
+
+        # Number of Sets in the Cache
         self.setcount = self.bcount // self.assoc
+        
+        # Records for number of hits and number of misses
         self.hcount = 0
         self.mcount = 0
 
+
     def fetch(self, addr):
-        # Update Recently Used Time
+        # Update Recently Used Time for each item in the cache
         for b in self.blist:
             if b is not None:
                 b.utime += 1
@@ -47,10 +58,17 @@ class Cache(object):
         # Cache Miss
         self.mcount += 1
         cindex = (bnum % self.bcount) * self.assoc
-        if self.assoc == 1: # Direct Mapping
-            self.blist[cindex] = b
+        for i in range(self.assoc):
+            if self.blist[cindex + i] == None:
+                self.blist[cindex + i] = b
+                break
         else:
-            pass
+            if self.pra == "r":
+                i = randrange(self.assoc)
+                self.blist[cindex + i] = b
+            elif self.pra == "l":
+                i = self.blist.index(max(self.blist[cindex:cindex+self.assoc], key=attrgetter("utime")))
+                self.blist[i] = b
 
 
     def stats(self):
@@ -63,6 +81,7 @@ class Cache(object):
         print("Hit Rate: {}".format(hrate))
         print("Miss Rate: {}".format(mrate))
         print("Average Memory Access Time: {}".format(amat))
+
 
 def parseConfig():
     """Provides an interface for parsing command line arguments"""
@@ -93,18 +112,21 @@ def parseConfig():
     )
     return parser.parse_args()
 
+
 def main():
     # Parse the input arguments and construct the Cache Object
     a = parseConfig()
     c = Cache(a.bsize, a.bcount, a.assoc, a.htime, a.mtime, a.pra)
+    source = sys.stdin
 
-    # Read an address from stdin and attempt to fetch it in the Cache
-    for line in sys.stdin:
+    # Read an address from source and attempt to fetch it in the Cache
+    for line in source:
         c.fetch(int(line, 0))
     
     # Print the Cache stats at the end of the program
     c.stats()
-    print(c.blist)
+    #print(c.blist)
+
 
 if __name__ == "__main__":
     main()
