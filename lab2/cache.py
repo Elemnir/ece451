@@ -57,7 +57,7 @@ class Cache(object):
         
         # Cache Miss
         self.mcount += 1
-        cindex = (bnum % self.bcount) * self.assoc
+        cindex = (bnum % (self.bcount // self.assoc)) * self.assoc
         for i in range(self.assoc):
             if self.blist[cindex + i] == None:
                 self.blist[cindex + i] = b
@@ -125,7 +125,7 @@ def main():
     
     # Print the Cache stats at the end of the program
     c.stats()
-    #print(c.blist)
+    print(c.blist)
 
 
 if __name__ == "__main__":
