@@ -25,7 +25,7 @@ class Cache(object):
         self.mtime = int(mtime)   # Miss penalty in cycles
         self.pra = str(pra)       # Page replacement algorithm setting
         
-        # The actual Cache List
+        # List of cached-in blocks
         self.blist = [None] * self.bcount
         
         # List of all referenced Blocks
@@ -57,16 +57,20 @@ class Cache(object):
         
         # Cache Miss
         self.mcount += 1
-        cindex = (bnum % (self.bcount // self.assoc)) * self.assoc
+        cindex = (bnum % self.setcount) * self.assoc
+        
+        # If there's an empty space, put it there
         for i in range(self.assoc):
             if self.blist[cindex + i] == None:
                 self.blist[cindex + i] = b
                 break
+        
+        # Otherwise, invoke the page replacement algorithm
         else:
-            if self.pra == "r":
+            if self.pra == "r": # Random Replacement algorithm
                 i = randrange(self.assoc)
                 self.blist[cindex + i] = b
-            elif self.pra == "l":
+            elif self.pra == "l": # Least Recently Used Replacement algorithm
                 i = self.blist.index(max(self.blist[cindex:cindex+self.assoc], key=attrgetter("utime")))
                 self.blist[i] = b
 
@@ -86,6 +90,10 @@ class Cache(object):
 def parseConfig():
     """Provides an interface for parsing command line arguments"""
     parser = argparse.ArgumentParser()
+    parser.add_argument('-P', '--print_cache',
+        action='store_true',
+        help="If given, the final cache contents will be printed to stout"
+    )
     parser.add_argument('-S', '--bsize', 
         type=int, required=True,
         help="Size of a block in words."
@@ -110,6 +118,10 @@ def parseConfig():
         type=str, default="r",
         help="Page Replacement Algorithm: r=Random, l=LRU"
     )
+    parser.add_argument('-F', '--fname',
+        type=str, default="",
+        help="Name of file to use as input, defaults to stdin if not provided"
+    )
     return parser.parse_args()
 
 
@@ -117,7 +129,10 @@ def main():
     # Parse the input arguments and construct the Cache Object
     a = parseConfig()
     c = Cache(a.bsize, a.bcount, a.assoc, a.htime, a.mtime, a.pra)
-    source = sys.stdin
+    if a.fname == "":
+        source = sys.stdin
+    else:
+        source = open(a.fname)
 
     # Read an address from source and attempt to fetch it in the Cache
     for line in source:
@@ -125,7 +140,9 @@ def main():
     
     # Print the Cache stats at the end of the program
     c.stats()
-    print(c.blist)
+    
+    if a.print_cache:
+        print(c.blist)
 
 
 if __name__ == "__main__":
