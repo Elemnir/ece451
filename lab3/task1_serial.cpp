@@ -19,15 +19,19 @@ int main(int argc, char** argv)
         return -1;
     }
     int n;
-    std::stringstream(argv[1]) >> n;
+    if (!(std::stringstream(argv[1]) >> n))
+    {
+        std::cerr << argv[1] << " cannot be converted to an integer.\n";
+        return -1;
+    }
 
     float val;
     std::vector<float> data, output;
     while (fin >> val)
         data.push_back(val);
     
-    output.resize(data.size() - n, 0.0f);
-    for (unsigned i = 0; i < data.size() - n; ++i)
+    output.resize(data.size() - n + 1, 0.0f);
+    for (unsigned i = 0; i < data.size() - n + 1; ++i)
         for (int j = 0; j < n; ++j)
             output[i] += data[i + j];
 
